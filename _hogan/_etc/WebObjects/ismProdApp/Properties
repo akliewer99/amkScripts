@@ -1,0 +1,20 @@
+# in case it didn't make into the launch script...
+WOFrameworksBaseURL /WebObjects/iSMTestApp.woa/Frameworks
+
+# Local location of the sf database
+SFModel2.URL=jdbc:mysql://127.0.0.1/iSkyMarshall3R01_Test_TNK
+SFModel2.DBUser=iskymarshall
+SFModel2.DBPassword=st4rf1re
+
+# log settings...
+log4j.logger.com.kkastle.iskymarshall.components.FooterSystem=INFO
+
+==============================================================
+# AMK added where the app path is
+iSM.App.Path=/_prodApp
+FLASH_HOST=ism.iskymarshall.com
+
+# Where the flash apps are
+iSM.FlashApplication.Location=/Library/Server/Web/Data/Sites/Default/iskymarshall/ismApp/_prodApp/_flash
+iBM.CanAddFlashApplications=TRUE
+com.kkastle.iskymarshall.flash.path=/_prodApp/_flash/

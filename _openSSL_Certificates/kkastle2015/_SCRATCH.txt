@@ -1,0 +1,15 @@
+
+/etc/ca-certificates/kkastle.CA.CRT.pem
+/etc/ca-certificates/kkastle.CA.PrivKey.pem
+
+/etc/ca-certificates/kkastle.com.server.CRT.pem
+/etc/ca-certificates/kkastle.com.server.PrivKey.pem
+
+========================================================================
+
+/etc/ca-certificates/tracs.kkastle.com.server.CRT.pem
+/etc/ca-certificates/tracs.kkastle.com.server.PrivKey.pem
+
+/etc/ca-certificates/www.kkastle.com.server.CRT.pem
+/etc/ca-certificates/www.kkastle.com.server.PrivKey.pem
+
