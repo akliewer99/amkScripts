@@ -18,7 +18,7 @@ set -e
 # - It will contain a line that refers to the Intermediate certificate.
 
 # INCLUDE ANOTHER SCRIPT FILE IN THIS FILE
-source amkScriptLibrary.sh
+source amkFunctions.sh
 # ----------------------------------------------------------------------
 # CERTIFICATE DETAILS NEEDED: 
 myDaysTL="3650" # Expires in 3650 days which = 10 years
