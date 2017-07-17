@@ -1,2 +1,3 @@
 # amkScripts
-Making my life easier with my personal linux scripts!
+A batch of customized shell scripts that make life easier.
+
