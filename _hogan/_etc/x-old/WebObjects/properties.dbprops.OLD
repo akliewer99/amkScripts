@@ -1,7 +1,0 @@
-# Where is this applications WODocumentRoot
-WODocumentRoot=/Library/WebServer/iskymarshall/ismApp
-
-# Where the flash apps are
-iSM.FlashApplication.Location=/Library/Server/Web/Data/Sites/iSkyMarshallApp/flash
-iBM.CanAddFlashApplications=true
-

@@ -10,40 +10,59 @@ set -e
 # echo -e "Hello\nWorld"
 #
 # PURPOSE: AMK Quick Way to generate new SelfSigned SSL Certificates!
-# Generate my own Certificate Authority (CA), Intermediate Cert and Server Certificate
+# Generate my own Certificate Authority (CA), Int Cert and Server Certificate
 
-# 2017-07-10 - modified some details from https://jamielinux.com/docs/openssl-certificate-authority/index.html
+# ----------------------------------------------------------------------
+# As of April 2019 - For instructions & explanations see
+# ----------------------------------------------------------------------
+# https://jamielinux.com/docs/openssl-certificate-authority/introduction.html
+# - Modified to match new encryption requirements by Chrome brower
+#
+# ----------------------------------------------------------------------
+# 2017-07-10 - modified some details from 
+# ----------------------------------------------------------------------
+# https://jamielinux.com/docs/openssl-certificate-authority/index.html
 # - The index.txt file is where the OpenSSL ca tool stores the certificate database.
 # - Do not delete or edit this file by hand.
-# - It will contain a line that refers to the Intermediate certificate.
-
+# - It will contain a line that refers to the Int certificate.
+#
+# ----------------------------------------------------------------------
 # INCLUDE ANOTHER SCRIPT FILE IN THIS FILE
+# ----------------------------------------------------------------------
 source amkFunctions.sh
 # ----------------------------------------------------------------------
 # CERTIFICATE DETAILS NEEDED: 
-myDaysTL="3650" # Expires in 3650 days which = 10 years
+# ----------------------------------------------------------------------
+myDaysTL="7300" # Expires in 7300 days which = 20 years
+# Expires in 3650 days which = 10 years
 # ----------------------------------------------------------------------
 #	SYNTAX: sudo ssl-full.sh Domain SerialNum CompanyName ServerName ready\n" 
-myCompany="$3 Certificate Authority"
-myCommonName="$3 Root CA"
+# ----------------------------------------------------------------------
+myCompany="$3"
+myCommonName="$3 CA"
 #
-myDepart="R & D"
-myCity="Roseville"
+myDepart="$3 Certificate Authority"
+myCity="Citrus Heights"
 myState="California"
 myCountry="US"
 #
-myPassPhrase="kastle7821022"
+myPassPhrase=kastle7821022   # old phrase was misspelled myPassPhrase=kkastle7821002
 myEmail="akliewer99@gmail.com"
+# ----------------------------------------------------------------------#
+# REMEMBER: Do not place "sudo" in this script, however you must include "sudo" on the commandline.
+# ----------------------------------------------------------------------
 #
-mySudoPwd="PurpleM00se"
+mySudoPwd=PurpleM00se
 #
 fname="$1"
+domain="$1"
 servername="$4"
 sn="$2"
 myCompany="$3"
-myCommonName="$4.$fname"
+myCommonName="$4.$1"
 # ----------------------------------------------------------------------
 # TESTING NECESSARY COMMANDLINE PARAMETERS
+# ----------------------------------------------------------------------
 if [ $# -le 4 ] ; then
 	echo -e "\nSYNTAX: sudo ssl-full.sh domain serialNum companyName serverName ready\n" 
 	echo -e "  REMEMBER:Must be run with SUDO.\n"
@@ -66,63 +85,117 @@ if [ $# -le 4 ] ; then
 	echo -e "  EMAIL: $myEmail"
 	echo -e ""
 	echo -e "  EXPIRES: $myDaysTL \t\t\t\t<- Days:3650 = 10 years"
-#	echo -e "  SudoPwd: $mySudoPwd"
 	echo -e ""
   exit ;
 elif [ $# -eq 5 ] ; then
 #
 workingdir=`pwd`
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+# SET LOG FILE & PATH
+fName="amk.log" # File name variables must have quotes!
+stepName="Creating log file."
+makelog $fName
+amklog="$fName" # File name variables must have quotes!
+# ----------------------------------------------------------------------
+# CA - Certificate Authority
+# ----------------------------------------------------------------------
+fnameRootKEY="ca.priv.key.pem"
+fnameRootCRT="ca.cert.pem"
+fnameRootKEYinsecure="ca.insecure.key.pem"
+
+# [CA_default]
+# ----------------------------------------------------------------------
+ca_dir		= "_ca" ; makedir $ca_dir
+certs			= "$ca_dir/certs" ; makedir $certs
+crl_dir		= "$ca_dir/crl" ; makedir $crl_dir  # Cert Revocation Lists
+new_certs_dir = "$ca_dir/newcerts" ; makedir $new_certs_dir
+ca_private = "$ca_dir/private" ; makedir $ca_private
+database = "$ca_dir/index.txt" ; makelog database
+serial = "$ca_dir/serial"  ; makelog serial
+RANDFILE = "$ca_private/.rand"  ;  makelog $RANDFILE
+
+# The root key and root certificate
+# ----------------------------------------------------------------------
+private_key       = "$ca_private/$fnameRootKEY"
+certificate       = "$certs/$fnameRootCRT"
+
+# For certificate revocation lists
+# ----------------------------------------------------------------------
+fnameRootCRL="ca.crl.pem"
+crlnumber					= "$ca_dir/crlnumber"
+crl								= "$crl_dir/$fnameRootCRL"
+crl_extensions		= "crl_ext"
+default_crl_days	= 30
+
+# SHA-2 (SHA-1 is deprecated)
+# ----------------------------------------------------------------------
+default_md 				= sha256
+
+
+
+# Make needed Int directories
+# ----------------------------------------------------------------------
+INTdir="_int"
+makedir $INTdir
+makedir $INTdir/certs
+makedir $INTdir/crl  # Cert Revocation Lists
+makedir $INTdir/private
 #
-fnameRootKEY="$3.CA.PrivKey.pem"
-fnameRootKEYinsecure="$3.CA.PrivKey.insecure.pem"
-fnameRootKEYsecure="$3.CA.PrivKey.secure.pem"
-fnameRootCRT="$3.CA.CRT.pem"
+fnameIntKEY="Int.Priv.Key.pem"
+fnameIntCSR="Int.csr.pem"  # Cert Signing Request
+fnameIntCRT="Int.CRT.pem"
 #
-fnameIntermediateKEY="$fname.Intermediate.PrivKey.pem"
-fnameIntermediateCSR="$fname.Intermediate.csr"
-fnameIntermediateCRT="$fname.Intermediate.CRT.pem"
-#
-fnameIntermediateKEYinsecure="$fname.Intermediate.PrivKey.insecure.pem"
-fnameIntermediateKEYsecure="$fname.Intermediate.PrivKey.secure.pem"
+fnameIntKEYinsecure="$INTdir/private/INT.Insecure.Key.pem"
 #
 fnameCAChainCRT="$fname.CAChain.CRT.pem"
 #
 fnameServerKEY="$fname.server.PrivKey.pem"
-fnameServerCSR="$fname.server.csr"
+fnameServerCSR="$fname.server.csr.pem"
 fnameServerCRT="$fname.server.CRT.pem"
 #
 fnameServerKEYinsecure="$fname.server.PrivKey.insecure.pem"
 fnameServerKEYsecure="$fname.server.PrivKey.secure.pem"
 #
 # ----------------------------------------------------------------------
-# ACTUAL WORK BEGINS
+# SET index for serial numbers
+fName="$dir/index.txt" # File name variables must have quotes!
+stepName="Creating index file."
+makelog $fName
+echo $sn >>$fName
 # ----------------------------------------------------------------------
-# SET LOG FILE & PATH
-amklog="amk.log" # File name variables must have quotes!
-stepName="Creating log file."
-makelog
+# SET serial for serial numbers
+fName="$dir/serial" # File name variables must have quotes!
+stepName="Creating serial file."
+makelog $fName
+echo $sn >>$fName
+#add_to_indexSN $fName $sn
 # ----------------------------------------------------------------------
-echo -e "\n\tBEGIN: CREATION OF SSL Certificates . . ."
 echo -e "\n\tBEGIN: CREATION OF SSL Certificates . . ." >> $amklog
 echo -e "\t\t- $stepName"
 echo -e "\t\t- $stepName" >> $amklog
 # ----------------------------------------------------------------------
 # TESTING IF COMMAND CONTAINS SUDO
 test4sudo
+# ----------------------------------------------------------------------
+stepName="Adding serial number to index file"
+fName="$dir/index.txt" # File name variables must have quotes!
+add_to_indexSN $fName $sn
+# ----------------------------------------------------------------------
 echo -e "\n\tGENERATING ROOT CERTIFICATE AUTHORITY"
 echo -e "\n\tGENERATING ROOT CERTIFICATE AUTHORITY" >> $amklog
 # ----------------------------------------------------------------------
-if [ -f openssl.cnf ] ; then sudo rm openssl.cnf ; fi
-# ----------------------------------------------------------------------
-# Copy empty file to openssl.cnf file
+# CREATING SSL CONFIG FILE
 stepName="Creating the SSL config file."
 doThis="cp empty_openssl.cnf openssl.cnf"
 echo -e "\t\t- $stepName"
 echo -e "\t\t- $stepName" >> $amklog
+if [ -f openssl.cnf ] ; then sudo rm openssl.cnf ; fi
 amkDoCommand $stepName $doThis
 # ----------------------------------------------------------------------
-# Copy Current Vaules to openssl.cnf file
-stepName="Adding current values to config file."
+# COPY DEFAULT VALUES TO CONFIG FILE
+stepName="Adding default values to config file"
 echo -e "\t\t- $stepName"
 echo -e "\t\t- $stepName" >> $amklog
 #
@@ -135,90 +208,137 @@ amkDoCommand $stepName $doThis
 doThis="`echo localityName_default="$myCity" >> openssl.cnf`"
 amkDoCommand $stepName $doThis
 #
-doThis="`echo organizationalUnitName_default="$myCompany Certificate Authority" >> openssl.cnf`"
+doThis="`echo 0.organizationalName_default="$myCompany" >> openssl.cnf`"
 amkDoCommand $stepName $doThis
 #
-doThis="`echo commonName_default="$myCompany Root CA" >> openssl.cnf`"
+doThis="`echo organizationalUnitName_default="$myDepart" >> openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo commonName_default="$myCompany CA" >> openssl.cnf`"
 amkDoCommand $stepName $doThis
 #
 doThis="`echo emailAddress_default="$myEmail" >> openssl.cnf`"
 amkDoCommand $stepName $doThis
 # ----------------------------------------------------------------------
-echo "" # REMEMBER two (2) echo stmts one for the screen, the other for the log file.
-echo "" >> $amklog
+stepName="CREATING CERTIFICATE AUTHORITY -> PRIVATE KEY"
+echo -e "\nmyPassPhrase is $myPassPhrase\n"
+doThis="openssl genrsa -aes256 -out $dir/$fnameRootKEY -passout pass:$myPassPhrase 4096"
+# MODIFIED: openssl genrsa -aes128 -out $fnameKEY -passout pass:kkastle7821002 2048
+# DEPRECATED: openssl genrsa -des3 -out $fnameKEY -passout pass:kkastle7821002 4096
+echo -e "\n\t$stepName"
+echo -e "\n\t$stepName" >> $amklog
+amkDoCommand $stepName $doThis
+chmod 400 $dir/$fnameRootKEY
+# ----------------------------------------------------------------------
+stepName="NOW GENERATING THE ROOT CA CERTIFICATE"
+echo -e "\n\t$stepName"
+echo -e "\n\t$stepName" >> $amklog
+doThis="openssl req -config openssl.cnf -key $dir/$fnameRootKEY -new -x509 -days $myDaysTL -sha256 -extensions v3_ca -passin pass:$myPassPhrase -out $dir/$fnameRootCRT"
+amkDoCommand $stepName $doThis
+chmod 400 $dir/$fnameRootCRT
+# ----------------------------------------------------------------------
+stepName="Creating Insecure Version of CA for Apache Server"
+doThis="openssl rsa -in $dir/$fnameRootKEY -passin pass:$myPassPhrase -out $dir/$fnameRootKEYinsecure"
+echo -e "\t\t- $stepName"
+echo -e "\t\t- $stepName" >> $amklog
+amkDoCommand $stepName $doThis
+# ----------------------------------------------------------------------
+# Make needed CA directories
+#dir="_ca"
+#dir="_ca/Int"
+#makedir 	$dir
+#makedir 	$dir/certs
+#makedir 	$dir/crl
+#makedir 	$dir/newcerts
+#makedir 	$dir/private
+touch $dir/indexInt.txt
+echo $sn >> $dir/indexInt.txt
+touch $dir/IntCRLnumber
+echo $sn >> $dir/IntCRLnumber
+# ----------------------------------------------------------------------
+stepName="CREATING THE Int KEY"
+stepName="Copying fresh config file"
+doThis="cp empty_INT_openssl.cnf INT_openssl.cnf"
+echo -e "\t\t- $stepName"
+echo -e "\t\t- $stepName" >> $amklog
+if [ -f INT_openssl.cnf ] ; then sudo rm INT_openssl.cnf ; fi
+amkDoCommand $stepName $doThis
+# ----------------------------------------------------------------------
+# COPY DEFAULT VALUES TO CONFIG FILE
+stepName="Adding new values to config file"
+echo -e "\t\t- $stepName"
+echo -e "\t\t- $stepName" >> $amklog
+#
+doThis="`echo private_key=$fnameRootKEY >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo certificate=$fnameRootCRT >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo countryName_default=$myCountry >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo stateOrProvinceName_default="$myState" >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo localityName_default="$myCity" >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo organizationalUnitName_default="$myCompany Int" >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo commonName_default="$myCompany Int CA" >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+#
+doThis="`echo emailAddress_default="$myEmail" >> INT_openssl.cnf`"
+amkDoCommand $stepName $doThis
+# ----------------------------------------------------------------------
+stepName="GENERATING THE Int CA => PRIVATE KEY"
+doThis="openssl genrsa -aes256 -out $dir/$fnameIntKEY -passout pass:$myPassPhrase 4096"
+# MODIFIED: openssl genrsa -aes128 -out $fnameServerKEY -passout pass:kkastle7821002 2048
+# DEPRECATED: openssl genrsa -des3 -out $fnameServerKEY -passout pass:kkastle7821002 4096
+echo -e "\n\t$stepName"
+echo -e "\n\t$stepName" >> $amklog
+amkDoCommand $stepName $doThis
+chmod 400 $dir/$fnameIntKEY
+# ----------------------------------------------------------------------
+stepName="CREATING THE INSECURE VERSION FOR APACHE SERVER"
+doThis="openssl rsa -in $dir/$fnameIntKEY -out $dir/$fnameIntKEYinsecure -passin pass:$myPassPhrase"
+echo -e "\n\t\t$stepName"
+echo -e "\n\t$stepName" >> $amklog
+amkDoCommand $stepName $doThis
+# ----------------------------------------------------------------------
+stepName="GENERATING THE Int CERTIFICATE SIGNING REQUEST (CSR)"
+doThis="openssl req -config INT_openssl.cnf -new -sha256 -key $dir/$fnameIntKEY -out $dir/$fnameIntCSR -passin pass:$myPassPhrase"
+echo -e "\n\t\t- $stepName"
+echo -e "\n\t\t- $stepName" >> $amklog
+amkDoCommand $stepName $doThis
+# ----------------------------------------------------------------------
+stepName="CREATING THE Int CERTIFICATE"
+doThis="openssl ca -config INT_openssl.cnf -extensions v3_Int_ca -days $3650 -notext -md sha256 -in $dir/$fnameIntCSR -out $dir/$fnameIntCRT"
+# MODIFIED: openssl ca -extensions v3_Int_ca -days $myDaysTL -key $fnameIntCSR -out $fnameIntCRT -config openssl.cnf -batch -passin pass:\"$myPassPhrase\" -passout pass:\"$myPassPhrase\
+echo -e "\t\t- $stepName"
+echo -e "\t\t- $stepName" >> $amklog
+amkDoCommand $stepName $doThis
+chmod 444 $dir/$fnameIntCRT
+# ----------------------------------------------------------------------
+stepName="CREATING THE CERTIFICATE CHAIN FILE"
+doThis="cat $dir/$fnameIntCRT $dir/$fnameRootCRT > $dir/$fnameCAChainCRT"
+echo -e "\t\t- $stepName"
+echo -e "\t\t- $stepName" >> $amklog
+amkDoCommand $stepName $doThis
+chmod 444 $dir/$fnameCAChainCRT
+# ----------------------------------------------------------------------
 #
 echo -e "\tThis command passed the test."
 echo -e "\tThis script is now exiting\n"
 #
 exit # After passing all tests, cut/paste from dotted line to mark below.
-#
 # ----------------------------------------------------------------------
 # THE BELOW STATEMENTS -> HAVE NOT BEEN TESTED!
 # ----------------------------------------------------------------------
-echo -e "Creating CA PRIVATE KEY\n"
-echo -e "Creating CA PRIVATE KEY\n" >> $amklog
-openssl genrsa -aes256 -out $fnameRootKEY -passout pass:"$myPassPhrase" 4096
-# MODIFIED: openssl genrsa -aes128 -out $fnameKEY -passout pass:"$myPassPhrase" 2048
-# DEPRECIATED: openssl genrsa -des3 -out $fnameKEY -passout pass:"$myPassPhrase" 4096
-#
-# CHECKING FOR ERROR: Did the last command complete successfully?
-estat=$? ;  # REMEMBER: This variable is a string not an integer!
-if test $estat != 0; then
- echo "ERROR: An error has occurred." ; >> $amkLog
- echo "WHILE ??????"; >> $amkLog
- echo "This script is now exiting"; >> $amkLog
- exit;
-fi
-#
-echo -e "\aNo errors detected"
-exit
-fi
-# ----------------------------------------------------------------------
-##
-
-echo -e "CA PRIVATE KEY created SUCCESSFULLY\n"
-
-echo -e "Creating insecure version CA for Apache Server\n"
-openssl rsa -in $fnameRootKEY  -out $fnameRootKEYinsecure -passin pass:"$myPassPhrase"
-echo -e "Insecure CA.KEY (public key) created SUCCESSFULLY\n"
-
-echo -e "\nNow generating the CA CERTIFICATE file\n"
-openssl req -new -x509 -days $myDaysTL -key $fnameRootKEY -out $fnameRootCRT -config openssl.cnf -batch -passin pass:"$myPassPhrase" -passout pass:"$myPassPhrase"
-echo -e "\nROOT CA Certificate completed\n"
-# ----------------------------------------------------------------------
-# ----------------------------------------------------------------------
-echo -e "\nNow generating the INTERMEDIATE KEY\n"
-# Copy values to openssl.cnf file
-cp $workingdir/empty_openssl.cnf openssl.cnf
-echo countryName_default="$myCountry" >> openssl.cnf
-echo stateOrProvinceName_default="$myState" >> openssl.cnf
-echo localityName_default="$myCity" >> openssl.cnf
-echo 0.organizationName_default="$myCompany Certificate Authority" >> openssl.cnf
-echo organizationalUnitName_default="$myCompany Intermediate" >> openssl.cnf
-echo commonName_default="$myCompany Intermediate CA" >> openssl.cnf
-echo emailAddress_default="$myEmail" >> openssl.cnf
-# ----------------------------------------------------------------------
-openssl genrsa -aes256 -out $fnameIntermediateKEY -passout pass:"$myPassPhrase" 4096
-# MODIFIED: openssl genrsa -aes128 -out $fnameServerKEY -passout pass:"$myPassPhrase" 2048
-# DEPRECIATED: openssl genrsa -des3 -out $fnameServerKEY -passout pass:"$myPassPhrase" 4096
-echo -e "\nINTERMEDIATE PRIVATE KEY created SUCCESSFULLY\n"
-
-echo -e "Creating insecure version Intermediate for Apache Server\n"
-openssl rsa -in $fnameIntermediateKEY -out $fnameIntermediateKEYinsecure -passin pass:"$myPassPhrase"
-echo -e "Insecure Intermediate.KEY (public key) created SUCCESSFULLY\n"
-
-echo -e "\nGenerating the INTERMEDIATE Certificate Signing Request (CSR)\n"
-openssl req -new -sha256 -key $fnameIntermediateKEY -out $fnameIntermediateCSR -config openssl.cnf -batch -passin pass:"$myPassPhrase" -passout pass:"$myPassPhrase"
-echo -e "\nINTERMEDIATE CSR Completed\n"
-
-echo -e "\nCREATING the INTERMEDIATE CERTIFICATE file\n"
-openssl ca -extensions v3_intermediate_ca -days $myDaysTL -key $fnameIntermediateCSR -out $fnameIntermediateCRT -config openssl.cnf -batch -passin pass:"$myPassPhrase" -passout pass:"$myPassPhrase"
-echo -e "\nINTERMEDIATE Certificate completed\n"
-# ----------------------------------------------------------------------
-# ----------------------------------------------------------------------
-echo -e "\nCREATING the CERTIFICATE CHANGE file\n"
-cat $fnameIntermediateCRT $fnameRootCRT > $fnameCAChainCRT
-# ----------------------------------------------------------------------
+echo "" # REMEMBER 3 name stmts one for the block, one for the screen, the last for the log file.
+echo "" >> $amklog
 # ----------------------------------------------------------------------
 echo -e "\nNow generating the SERVER Key\n"
 # Copy values to openssl.cnf file
@@ -231,22 +351,22 @@ echo organizationalUnitName_default="$myCompany Web Services" >> openssl.cnf
 echo commonName_default="$myCommonName" >> openssl.cnf
 echo emailAddress_default="$myEmail" >> openssl.cnf
 # ----------------------------------------------------------------------
-openssl genrsa -aes256 -out $fnameServerKEY -passout pass:"$myPassPhrase" 2048
-# MODIFIED: openssl genrsa -aes128 -out $fnameServerKEY -passout pass:"$myPassPhrase" 2048
-# DEPRECIATED: openssl genrsa -des3 -out $fnameServerKEY -passout pass:"$myPassPhrase" 4096
+openssl genrsa -aes256 -out $fnameServerKEY -passout pass:\"$myPassPhrase\" 2048
+# MODIFIED: openssl genrsa -aes128 -out $fnameServerKEY -passout pass:kkastle7821002 2048
+# DEPRECATED: openssl genrsa -des3 -out $fnameServerKEY -passout pass:kkastle7821002 4096
 echo -e "\nServer Private Key Completed\n"
 
 echo -e "\nGenerating the Certificate Signing Request (CSR)\n"
-openssl req -new -sha256 -key $fnameServerKEY -out $fnameServerCSR -config openssl.cnf -batch -passin pass:"$myPassPhrase" -passout pass:"$myPassPhrase"
+openssl req -new -sha256 -key $fnameServerKEY -out $fnameServerCSR -config openssl.cnf -batch -passin pass:$myPassPhrase -passout pass:\"$myPassPhrase\"
 echo -e "\nSERVER CSR completed\n"
 
-echo -e "\nSigning the CSR with the Intermediate CA CRT\n"
-openssl ca -extensions server_cert -md sha256 -days $myDaysTL -in $fnameServerCSR -CA $fnameIntermediateCRT -CAkey $fnameIntermediateKEY -set_serial $sn -out $fnameServerCRT -passin pass:"$myPassPhrase"
-# MODIFIED: openssl x509 -req -days $myDaysTL -in $fnameServerCSR -CA $fnameCRT -CAkey $fnameKEY -set_serial $sn -out $fnameServerCRT -passin pass:"$myPassPhrase"
+echo -e "\nSigning the CSR with the Int CA CRT\n"
+openssl ca -extensions server_cert -md sha256 -days $myDaysTL -in $fnameServerCSR -CA $fnameIntCRT -CAkey $fnameIntKEY -set_serial $sn -out $fnameServerCRT -passin pass:$myPassPhrase
+# MODIFIED: openssl x509 -req -days $myDaysTL -in $fnameServerCSR -CA $fnameCRT -CAkey $fnameKEY -set_serial $sn -out $fnameServerCRT -passin pass:kkastle7821002
 echo -e "\nSERVER Certificate completed SUCCESSFULLY\n"
 
 echo -e "\nMaking insecure version for Apache Server\n"
-openssl rsa -in $fnameServerKEY -out $fnameServerKEYinsecure -passin pass:"$myPassPhrase"
+openssl rsa -in $fnameServerKEY -out $fnameServerKEYinsecure -passin pass:\"$myPassPhrase\"
 echo -e "\nInsecure Server.KEY Completed\n"
 
 mv $fnameServerKEY $fnameServerKEYsecure
@@ -266,7 +386,7 @@ else
 	mv *.secure.pem ./_secure
 fi
 #
-echo -e "You MUST COPY TO: /etc/ca-certificates\n"
+echo -e "You MUST COPY TO: /etc/certificates\n"
 echo -e "SET FILE PERMISSIONS: 600\n"
 echo -e "ALL DONE!\n"
 ls -al

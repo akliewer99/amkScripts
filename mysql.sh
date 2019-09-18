@@ -5,9 +5,6 @@ set -e
 # Check commandline for proper variables
 
 
-$sname_fname="mysql.server"
-
-
 if [ $# -eq 0 ] ; then
 	 echo -e '\n SYNTAX: mysql.sh start|stop\n\n' 
 	exit ;
@@ -26,7 +23,7 @@ elif [ $# -eq 1 ] ; then
       		exit;
 
       elif [ "$sname" == "hogan" ] ; then
-			launchctl load /Library/LaunchDaemons/homebrew.mxcl.mysqld.plist
+			mysql.server start
     exit;
 
       elif [ "$sname" == "carter" ] ; then
@@ -43,7 +40,7 @@ elif [ $# -eq 1 ] ; then
       exit;
 
       elif [ "$sname" == "hogan" ] ; then
-      launchctl unload /Library/LaunchDaemons/homebrew.mxcl.mysqld.plist
+      mysql.server stop
       exit;
 
       elif [ "$sname" == "carter" ] ; then
