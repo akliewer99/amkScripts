@@ -1,0 +1,94 @@
+#!/bin/bash
+# Set auto error checking
+set -e
+# AUTHOR : Arlene Kliewer
+# TITLE: b4pr
+# PURPOSE: copy and replace app.html before BitBucket checkin
+# RUN THIS SCRIPT TWICE FOR EVERY COMMIT & PULL REQUEST
+#
+# ----------------------------------------------------------------------
+# As of AUGUST 2020 - 
+# ----------------------------------------------------------------------
+#  I AM SO MAD!!!!! TIM IS BEING REDICULOUS. WE ARE RETIRED.
+# THIS ISM PROJECT IS ONLY FOR FUN. A SILLY LITTLE "debug screens" CLASS NAME ON THE
+# BODY TAG ISN'T GOING TO HURT ANYTHING, BUT NO HE DOESN'T WANT TO CHECK
+# THAT INTO THE PERMANENT ISM REPO. BECAUSE IT ISN'T NECCESSARY FOR PRODUCTION.
+# WELL WHO CARES THE F*%&K ABOUT PRODUCTION? NO ONE WILL EVER REALLY
+# USE THIS ISM WEBSITE ANYWAYS!!!!!!!!
+##
+#
+# NOTE: BASH shell requires -e for escape characters to work
+# echo -e "Hello\nWorld"
+#
+# ----------------------------------------------------------------------
+# TEST COMMAND LINE OPTIONS- Make sure to have everything needed
+# ----------------------------------------------------------------------
+# TESTING FOR SUDO COMMAND
+#test4sudo
+# ----------------------------------------------------------------------
+# TESTING NECESSARY COMMANDLINE PARAMETERS
+if [[ $# -ne 1 ]] ; then
+	echo -e "\nSYNTAX: b4pr XXX\n" 
+	echo -e "  \n"
+	echo -e "  EXAMPLE:"
+	echo -e "  tim = app.tim.html"
+	echo -e "  amk = app.amk.html"
+	echo -e ""
+fi
+#
+# ----------------------------------------------------------------------
+# MY VARIABLES
+# ----------------------------------------------------------------------
+# mySudoPwd="PurpleM00se"
+ismParentPath=~/Repos-git/starfire-fresh/iSkyMarshal/layouts
+tagName=$1
+#echo -e "TAGNAME= $tagName"
+# ----------------------------------------------------------------------
+# MY ALIASES
+# ----------------------------------------------------------------------
+#goto_ismPath=`cd $ismParentPath`
+#goto_amkTemp=`cd $ismParentPath/amkTemp`
+##
+
+# SET LOG FILE & PATH
+#fName="./deployism.log" # File name variables must have quotes!
+#stepName="Creating log file."
+#amklog="$fName" # File name variables must have quotes!
+# ----------------------------------------------------------------------
+# FUNCTIONS INCLUDED FROM OTHER SCRIPT FILES
+# ----------------------------------------------------------------------
+source /usr/local/_amkScripts/amkFunctions.sh
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+#makelog $fName
+# ----------------------------------------------------------------------
+if [[ $tagName == 'tim' ]] ; then
+   stepName="Replace app.html with app.tim.html"
+   doThis="cp -f $ismParentPath/app.tim.html $ismParentPath/app.html"
+   amkDoCommand $stepName $doThis
+ else 
+   stepName="Replace app.html with app.amk.html"
+   doThis="cp -f $ismParentPath/app.amk.html $ismParentPath/app.html"
+   amkDoCommand $stepName $doThis
+fi
+
+echo -e "\tThis script will now exit.\n"
+exit ; # After passing all tests, cut/paste from dotted line to mark below.
+# ----------------------------------------------------------------------
+# HIGHLIGHT_AND_REPLACE_NEW_BLOCK_GOES_HERE
+# ----------------------------------------------------------------------
+# stepName="Update npm globals"
+# doThis="npm install -g npm"
+# echo -e "\t\t- $stepName" | tee -a $amklog  // writes to log only
+# amkDoCommand $stepName $doThis
+# # ----------------------------------------------------------------------
+# stepName="Change permissions"
+# doThis="chmod -R $ismPath"
+# echo -e "\t\t- $stepName" | tee -a $amklog // writes to log only
+# amkDoCommand $stepName $doThis
+# # ----------------------------------------------------------------------
+#
+# echo -e "\tThis command passed the test."
+# echo -e "\tThis script is now exiting\n"
+# #

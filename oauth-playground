@@ -1,0 +1,26 @@
+POST /token HTTP/1.1
+Host: oauth2.googleapis.com
+Content-length: 277
+content-type: application/x-www-form-urlencoded
+user-agent: google-oauth-playground
+code=4%2FwAHjKFg8fU-EQKogX2DnYmN3U-Sra4MDTjnDBzC8Pto32v_NxSnTWW8advXdzsw2tPNZALsPBUB3VAqIKQkKZaM&redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&client_id=407408718192.apps.googleusercontent.com&client_secret=************&scope=&grant_type=authorization_code
+HTTP/1.1 200 OK
+Content-length: 436
+X-xss-protection: 0
+X-content-type-options: nosniff
+Transfer-encoding: chunked
+Vary: Origin, X-Origin, Referer
+Server: scaffolding on HTTPServer2
+-content-encoding: gzip
+Cache-control: private
+Date: Tue, 04 Feb 2020 00:13:19 GMT
+X-frame-options: SAMEORIGIN
+Alt-svc: quic=":443"; ma=2592000; v="46,43",h3-Q050=":443"; ma=2592000,h3-Q049=":443"; ma=2592000,h3-Q048=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000
+Content-type: application/json; charset=utf-8
+{
+  "access_token": "ya29.Il-8B10ti9lBkKBQh2D8rH2Fn2I8QZepzQmrnqXmyJJBN4Uz_WHLGZfo-qjHy9IwXHRRLHG960AcmuT-XLUxphOirqUn8JetbBT0d4jY26WxAd92n14QqYI7l2zTbetQUg", 
+  "scope": "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/datastore", 
+  "token_type": "Bearer", 
+  "expires_in": 3599, 
+  "refresh_token": "1//045tyCzDbejgACgYIARAAGAQSNwF-L9IruMxTr3elg46PHZNJfKA43CUMrIBabiHZCfUd1MBaWjRz0NCY34YeJhNs6INJ1naOVQI"
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+
+        <key>Label</key>
+        <string>amk.mongodb.start.plist</string>
+
+        <key>ProgramArguments</key>
+        <array>
+                <string>/usr/local/_amkScripts/mongod-start.sh</string>
+        </array>
+
+		<key>RunAtLoad</key>
+        <true/>
+        
+        <key>StandardErrorPath</key>
+        <string>/var/log/mongod.amk.err</string>
+
+        <key>StandardOutPath</key>
+        <string>/var/log/mongod.amk.out</string>
+</dict>
+</plist>

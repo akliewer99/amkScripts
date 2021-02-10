@@ -1,0 +1,108 @@
+#!/bin/bash
+# Set auto error checking
+set -e
+# AUTHOR : Arlene Kliewer
+# TITLE: amkscripts
+# PURPOSE: Quick review of available scripts
+#  Because I forget what scripts I have
+# ----------------------------------------------------------------------
+# As of AUGUST 2020 - 
+# ----------------------------------------------------------------------
+#
+# NOTE: BASH shell requires -e for escape characters to work
+# echo -e "Hello\nWorld"
+#
+# ----------------------------------------------------------------------
+# TEST COMMAND LINE OPTIONS- Make sure to have everything needed
+# ----------------------------------------------------------------------
+# TESTING FOR SUDO COMMAND
+#test4sudo
+# ----------------------------------------------------------------------
+# TESTING NECESSARY COMMANDLINE PARAMETERS
+if [[ $# -ne 1 ]] ; then
+	echo -e "\n"
+	echo -e "\tAMKSCRIPT DIRECTORY" 
+echo -e "\t----------------------------------------------------------------------"
+echo -e "\tNAME - DESCRIPTION"
+echo -e "\t----------------------------------------------------------------------"
+echo -e "\tb4pr - For ISM's Repo, replaces app.html for either AMK/Tim's version"
+echo -e "\tamk-deployism.sh - "
+echo -e "\tamk.sh - "
+echo -e "\tamkFunctions.sh - IMPORTNAT functions used to run internal commands called by other scripts."
+echo -e "\tamkResetlog.sh - Zathrus Ubuntu reset server log"
+echo -e "\tamkRestart.sh - Restarted Zathrus ubuntu server"
+echo -e "\tapache.sh - Old mac apachectl script used on multiple systems"
+echo -e "\tdeployism.sh - Deploys BitBucket's tagged repo version to newkirk server"
+echo -e "\tmysql.sh - Old mac mysqlctl script used on multiple systems"
+echo -e "\tremove.sh - ??"
+echo -e "\tssl-ca.sh - Creates self-signed Certificate Authority "
+echo -e "\tssl-client.sh - Creates self-signed Client Certificates"
+echo -e "\tssl-full.sh - Creates self-signed all Certificates for a domain server"
+echo -e "\tssl-half.sh - Creates self-signed domain certificates "
+echo -e "\tssl-int.sh - Creates self-signed Intermediate Certificate Authority"
+echo -e "\tssl-server.sh - Creates self-signed server Certificates"
+echo -e "\tssl-user.sh - Creates self-signed user certificates"
+echo -e ""
+echo -e "\t----------------------------------------------------------------------"
+echo -e "\tOLD SYSTEM PROFILES"
+echo -e "\t----------------------------------------------------------------------"
+echo -e "\t Each system has a separate directory, containing user profile"
+echo -e "\n"
+fi
+#
+# ----------------------------------------------------------------------
+# MY VARIABLES
+# ----------------------------------------------------------------------
+# mySudoPwd="PurpleM00se"
+# ismParentPath=~/Repos-git/starfire-fresh/iSkyMarshal/layouts
+# tagName=$1
+#echo -e "TAGNAME= $tagName"
+# ----------------------------------------------------------------------
+# MY ALIASES
+# ----------------------------------------------------------------------
+#goto_ismPath=`cd $ismParentPath`
+#goto_amkTemp=`cd $ismParentPath/amkTemp`
+##
+
+# SET LOG FILE & PATH
+#fName="./deployism.log" # File name variables must have quotes!
+#stepName="Creating log file."
+#amklog="$fName" # File name variables must have quotes!
+# ----------------------------------------------------------------------
+# FUNCTIONS INCLUDED FROM OTHER SCRIPT FILES
+# ----------------------------------------------------------------------
+#source /usr/local/_amkScripts/amkFunctions.sh
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+#makelog $fName
+# ----------------------------------------------------------------------
+# if [[ $tagName == 'tim' ]] ; then
+#    stepName="Replace app.html with app.tim.html"
+#    doThis="cp -f $ismParentPath/app.tim.html $ismParentPath/app.html"
+#    amkDoCommand $stepName $doThis
+#  else 
+#    stepName="Replace app.html with app.amk.html"
+#    doThis="cp -f $ismParentPath/app.amk.html $ismParentPath/app.html"
+#    amkDoCommand $stepName $doThis
+# fi
+# 
+# echo -e "\tThis script will now exit.\n"
+# exit ; # After passing all tests, cut/paste from dotted line to mark below.
+# ----------------------------------------------------------------------
+# HIGHLIGHT_AND_REPLACE_NEW_BLOCK_GOES_HERE
+# ----------------------------------------------------------------------
+# stepName="Update npm globals"
+# doThis="npm install -g npm"
+# echo -e "\t\t- $stepName" | tee -a $amklog  // writes to log only
+# amkDoCommand $stepName $doThis
+# # ----------------------------------------------------------------------
+# stepName="Change permissions"
+# doThis="chmod -R $ismPath"
+# echo -e "\t\t- $stepName" | tee -a $amklog // writes to log only
+# amkDoCommand $stepName $doThis
+# # ----------------------------------------------------------------------
+#
+# echo -e "\tThis command passed the test."
+# echo -e "\tThis script is now exiting\n"
+# #
