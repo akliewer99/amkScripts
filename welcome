@@ -1,0 +1,47 @@
+#!/bin/bash
+# Set auto error checking
+set -e
+# AUTHOR : Arlene Kliewer
+# TITLE: welcome
+# PURPOSE: On Ubuntu . . . prints basic sysinfo
+#
+# NOTE: BASH shell requires -e for escape characters to work
+# echo -e "Hello\nWorld"
+#
+# ----------------------------------------------------------------------
+# TEST COMMAND LINE OPTIONS- Make sure to have everything needed
+# ----------------------------------------------------------------------
+# TESTING FOR SUDO COMMAND
+#test4sudo
+# ----------------------------------------------------------------------
+# TESTING NECESSARY COMMANDLINE PARAMETERS
+if [ $# -le 1 ] ; then
+	echo -e "\nSYNTAX: sudo welcome \n" 
+	echo -e "  REMEMBER:Must be run with SUDO.\n"
+	echo -e ""
+  exit 
+elif;
+# ----------------------------------------------------------------------
+# MY VARIABLES
+# ----------------------------------------------------------------------
+# mySudoPwd="PurpleM00se"
+# ismParentPath=~/Repos-git/starfire-fresh/iSkyMarshal/layouts
+# tagName=$1
+# echo -e "TAGNAME= $tagName"
+# ----------------------------------------------------------------------
+# SET LOG FILE & PATH
+#fName="./deployism.log" # File name variables must have quotes!
+#stepName="Creating log file."
+#amklog="$fName" # File name variables must have quotes!
+# ----------------------------------------------------------------------
+# FUNCTIONS INCLUDED FROM OTHER SCRIPT FILES
+# ----------------------------------------------------------------------
+#source /usr/local/_amkScripts/amkFunctions.sh
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+sudo run-parts /etc/update-motd.d
+
+
+exit ; # After passing all tests, cut/paste from dotted line to mark below.
+# ----------------------------------------------------------------------

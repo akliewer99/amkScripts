@@ -61,6 +61,7 @@ alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall F
 export PATH=/usr/local/opt/apr/bin:$PATH
 export PATH=/usr/local/opt/apr-util/bin:$PATH
 export PATH=/usr/local/opt/bison/bin:$PATH
+export PATH=/usr/local/opt/curl/bin:$PATH
 export PATH=/usr/local/opt/curl-openssl/bin:$PATH
 export PATH=/usr/local/opt/gettext/bin:$PATH
 export PATH=/usr/local/opt/icu4c/bin:$PATH
@@ -84,6 +85,7 @@ export PATH=/usr/local/var/www/wordpress/wp-content/themes/wprig/vendor/squizlab
 #=== LDFLAGS =======================================
 #LDFLAG_PATHS=PasteNewValueHere:$LDFLAG_PATHS
 LDFLAG_PATHS=/usr/local/opt/bison/lib:$LDFLAG_PATHS
+LDFLAG_PATHS=/usr/local/opt/curl/lib:$LDFLAG_PATHS
 LDFLAG_PATHS=/usr/local/opt/curl-openssl/lib:$LDFLAG_PATHS
 LDFLAG_PATHS=/usr/local/opt/gettext/lib:$LDFLAG_PATHS
 LDFLAG_PATHS=/usr/local/opt/icu4c/lib:$LDFLAG_PATHS
@@ -100,6 +102,7 @@ LDFLAG_PATHS=/usr/local/opt/tcl-tk/lib:$LDFLAG_PATHS
 
 #=== CPPFLAGS =======================================
 #CPPFLAG_PATHS=PasteNewValueHere:$CPPFLAG_PATHS
+CPPFLAG_PATHS=/usr/local/opt/curl/include:$CPPFLAG_PATHS
 CPPFLAG_PATHS=/usr/local/opt/curl-openssl/include:$CPPFLAG_PATHS
 CPPFLAG_PATHS=/usr/local/opt/gettext/include:$CPPFLAG_PATHS
 CPPFLAG_PATHS=/usr/local/opt/icu4c/include:$CPPFLAG_PATHS
@@ -114,6 +117,7 @@ CPPFLAG_PATHS=/usr/local/opt/tcl-tk/include:$CPPFLAG_PATHS
 
 #=== PKG_CONFIG =======================================
 #PKG_CONFIG=PasteNewValueHere:$PKG_CONFIG
+PKG_CONFIG=/usr/local/opt/curl/lib/pkgconfig:$PKG_CONFIG
 PKG_CONFIG=/usr/local/opt/curl-openssl/lib/pkgconfig:$PKG_CONFIG
 PKG_CONFIG=/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG
 PKG_CONFIG=/usr/local/opt/krb5/lib/pkgconfig:$PKG_CONFIG
