@@ -15,12 +15,12 @@ set -e
 #test4sudo
 # ----------------------------------------------------------------------
 # TESTING NECESSARY COMMANDLINE PARAMETERS
-if [ $# -le 1 ] ; then
-	echo -e "\nSYNTAX: sudo welcome \n" 
-	echo -e "  REMEMBER:Must be run with SUDO.\n"
-	echo -e ""
-  exit 
-elif;
+#if [ $# -le 1 ] ; then
+#	echo -e "\nSYNTAX: sudo welcome \n" 
+#	echo -e "  REMEMBER:Must be run with SUDO.\n"
+#	echo -e ""
+#  exit 
+#elif;
 # ----------------------------------------------------------------------
 # MY VARIABLES
 # ----------------------------------------------------------------------
