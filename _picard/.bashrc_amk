@@ -20,9 +20,9 @@ set -e
 # ----------------------------------------------------------------------
 # MY VARIABLES
 # ----------------------------------------------------------------------
-sname=picard
-amkScripts=/usr/local/sbin/amkScripts
-git-path_amkScripts=https://github.com/akliewer99/amkScripts.git
+sname="picard"
+amkScripts="/usr/local/sbin/amkScripts"
+git-path_amkScripts="https://github.com/akliewer99/amkScripts.git"
 mySudoPwd="PurpleM00se"
 #
 # ----------------------------------------------------------------------
