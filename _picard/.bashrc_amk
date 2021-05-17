@@ -22,8 +22,8 @@ set -e
 # ----------------------------------------------------------------------
 sname="picard"
 amkScripts="/usr/local/sbin/amkScripts"
-git-path_amkScripts="https://github.com/akliewer99/amkScripts.git"
-mySudoPwd="PurpleM00se"
+#git-path_amkScripts="https://github.com/akliewer99/amkScripts.git"
+#mySudoPwd="PurpleM00se"
 #
 # ----------------------------------------------------------------------
 # MY ALIASES
