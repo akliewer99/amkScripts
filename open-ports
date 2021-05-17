@@ -1,0 +1,21 @@
+#!/bin/bash
+# Set auto error checking
+set -e
+
+# AUTHOR : Arlene Kliewer
+# TITLE: open-ports
+# SHELL: bash
+#
+# NOTE: BASH shell requires -e for escape characters to work
+# echo -e "Hello\nWorld"
+#
+# PURPOSE: list all LISTENING ports
+#
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+sudo netstat -lntup | grep LISTEN
+
+# ----------------------------------------------------------------------
+exit ; # After passing all tests, cut/paste from dotted line to mark below.
+# ----------------------------------------------------------------------

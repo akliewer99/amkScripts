@@ -32,16 +32,16 @@ amklog="$fName" # File name variables must have quotes!
 test4sudo
 # ----------------------------------------------------------------------
 # TESTING NECESSARY COMMANDLINE PARAMETERS
-if [ $# -le 1 ] ; then
-	echo -e "\nSYNTAX: sudo amkBlank.sh \n" 
-	echo -e "  REMEMBER:Must be run with SUDO.\n"
-	echo -e "  EXAMPLE:"
-	echo -e "  TagName=Version.00x \tMust match exact BitBucket.org/starfire/Tags spelling!!!"
-	echo -e ""
-  exit 
-elif;
+#if [ $# -le 1 ] ; then
+#	echo -e "\nSYNTAX: sudo amkBlank.sh \n" 
+#	echo -e "  REMEMBER:Must be run with SUDO.\n"
+#	echo -e "  EXAMPLE:"
+#	echo -e "  TagName=Version.00x \tMust match exact BitBucket.org/starfire/Tags spelling!!!"
+#	echo -e ""
+#  exit 
+#elif;
 # ----------------------------------------------------------------------
-# Use TextExpander Snippet, s s t e p
+# ACTUAL WORK BEGINS
 # ----------------------------------------------------------------------
 stepName="RESTART SERVER"
 doThis="sudo shutdown -r now"
@@ -51,5 +51,8 @@ amkDoCommand $stepName $doThis
 # ----------------------------------------------------------------------
 # HIGHLIGHT_AND_REPLACE_NEW_BLOCK_GOES_HERE
 
-#
+# ----------------------------------------------------------------------
+exit ; # After passing all tests, cut/paste from dotted line to mark below.
+# ----------------------------------------------------------------------
+
 
