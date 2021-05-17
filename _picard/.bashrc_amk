@@ -3,7 +3,7 @@
 # ----------------------------------------------------------------------
 sname="picard"
 PATH="/home/akliewer/amkScripts:$PATH"
-#mySudoPwd="PurpleM00se"
+amkScripts="/home/akliewer/amkScripts"
 #
 # ----------------------------------------------------------------------
 # MY ALIASES
