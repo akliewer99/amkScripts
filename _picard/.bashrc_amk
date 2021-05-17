@@ -6,7 +6,7 @@ set -e
 # 05-16-2021 - amk was here
 # ----------------------------------------------------------------------
 # INCLUDE ANOTHER SCRIPT FILE IN THIS FILE
-#source ~/.bashrc_amk         
+#source ~/amkScripts/_picard/.bashrc_amk         
 # ----------------------------------------------------------------------
 # NOTE: On Ubuntu, add above includes to the bottom of .bashrc file
 # REMINDER: Symbolic link .bash_amk to my amkScripts _sname/.bashrc_amk
