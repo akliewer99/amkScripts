@@ -1,15 +1,15 @@
 #!/bin/bash
 # Set auto error checking
-#set -e
+set -e
 #
 # ----------------------------------------------------------------------
 # 05-16-2021 - amk was here
 # ----------------------------------------------------------------------
 # INCLUDE ANOTHER SCRIPT FILE IN THIS FILE
-source ~/.bash_amk         
+#source ~/.bashrc_amk         
 # ----------------------------------------------------------------------
 # NOTE: On Ubuntu, add above includes to the bottom of .bashrc file
-# REMINDER: Symbolic link .bash_amk to my amkScripts _sname/.bash_amk
+# REMINDER: Symbolic link .bash_amk to my amkScripts _sname/.bashrc_amk
 #
 # AUTHOR : Arlene Kliewer
 # TITLE: .bash_amk
