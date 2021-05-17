@@ -1,0 +1,38 @@
+#!/bin/bash
+# Set auto error checking
+set -e
+#
+# ----------------------------------------------------------------------
+# 05-16-2021 - amk was here
+# ----------------------------------------------------------------------
+# INCLUDE ANOTHER SCRIPT FILE IN THIS FILE
+source ~/.bash_amk         
+# ----------------------------------------------------------------------
+# NOTE: On Ubuntu, add above includes to the bottom of .bashrc file
+# REMINDER: Symbolic link .bash_amk to my amkScripts _sname/.bash_amk
+#
+# AUTHOR : Arlene Kliewer
+# TITLE: .bash_amk
+# PURPOSE: Adds my preferences to my user
+#
+# REMINDER: BASH shell requires -e for escape characters to work
+# EXAMPLE: echo -e "Hello\nWorld"
+# ----------------------------------------------------------------------
+# MY VARIABLES
+# ----------------------------------------------------------------------
+sname=picard
+amkScripts=/usr/local/sbin/amkScripts
+git-path_amkScripts=https://github.com/akliewer99/amkScripts.git
+mySudoPwd="PurpleM00se"
+#
+# ----------------------------------------------------------------------
+# MY ALIASES
+# ----------------------------------------------------------------------
+#goto_ismPath=`cd $ismParentPath`
+#goto_amkTemp=`cd $ismParentPath/amkTemp`
+#
+# ----------------------------------------------------------------------
+# ACTUAL WORK BEGINS
+# ----------------------------------------------------------------------
+
+
